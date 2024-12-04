@@ -1,0 +1,107 @@
+npx create-next-app my-receipt-generator
+cd my-receipt-generator
+// components/ReceiptHeader.js
+import React from 'react';
+
+const ReceiptHeader = ({ logo, brandName, address }) => {
+  return (
+    <div>
+      <img src={logo} alt="Your Logo" />
+      <h2>{brandName}</h2>
+      <p>{address}</p>
+    </div>
+  );
+};
+
+export default ReceiptHeader;
+
+// components/ReceiptDetails.js
+import React from 'react';
+
+const ReceiptDetails = ({ date, hour, items }) => {
+  return (
+    <div>
+      <p>Date: {date}</p>
+      <p>Hour: {hour}</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>QTY</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item, index) => (
+            <tr key={index}>
+              <td>{item.description}</td>
+              <td>{item.quantity}</td>
+              <td>{item.amount}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default ReceiptDetails;
+
+// components/ReceiptSummary.js
+import React from 'react';
+
+const ReceiptSummary = ({ subTotal, tax, total }) => {
+  return (
+    <div>
+      <p>Sub Total: {subTotal}</p>
+      <p>Tax: {tax}</p>
+      <p>Total: {total}</p>
+    </div>
+  );
+};
+
+export default ReceiptSummary;
+// components/Receipt.js
+import React, { useState } from 'react';
+import ReceiptHeader from './ReceiptHeader';
+import ReceiptDetails from './ReceiptDetails';
+import ReceiptSummary from './ReceiptSummary';
+
+const Receipt = () => {
+  const [logo, setBrandLogo] = useState('/your-logo.png');
+  const [brandName, setBrandName] = useState('Your Brand Name');
+  const [address, setAddress] = useState('Your Address');
+  const [date, setDate] = useState('2023-04-12');
+  const [hour, setHour] = useState('10:30 AM');
+  const [items, setItems] = useState([
+    { description: 'Item 1', quantity: 2, amount: 10.99 },
+    { description: 'Item 2', quantity: 1, amount: 15.50 },
+  ]);
+  const [subTotal, setSubTotal] = useState(36.48);
+  const [tax, setTax] = useState(2.88);
+  const [total, setTotal] = useState(39.36);
+
+  return (
+    <div>
+      <ReceiptHeader logo={logo} brandName={brandName} address={address} />
+      <ReceiptDetails date={date} hour={hour} items={items} />
+      <ReceiptSummary subTotal={subTotal} tax={tax} total={total} />
+    </div>
+  );
+};
+
+export default Receipt;
+// pages/index.js
+import React from 'react';
+import Receipt from '../components/Receipt';
+
+const HomePage = () => {
+  return (
+    <div>
+      <h1>Receipt Generator</h1>
+      <Receipt />
+    </div>
+  );
+};
+
+export default HomePage;
